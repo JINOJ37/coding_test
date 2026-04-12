@@ -1,35 +1,41 @@
 import java.util.*;
 
-public class Main{
+public class Main {
+    static int N;
+    static boolean[] isBroken = new boolean[10];
+    static int minPress;
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        int n = sc.nextInt();
-        int m = sc.nextInt();
-        boolean[] broken = new boolean[10];
+        N = sc.nextInt();
+        int M = sc.nextInt();
 
-        for(int i = 0; i<m; i++){
-            broken[sc.nextInt()] = true;
+        for (int i = 0; i < M; i++) {
+            isBroken[sc.nextInt()] = true;
         }
 
-        int minPress = Math.abs(n-100);
+        minPress = Math.abs(N - 100);
 
-        for(int i = 0; i<=1000000; i++){
-            String num = String.valueOf(i);
-            boolean isPossible = true;
-    
-            for(int j = 0; j<num.length(); j++){
-                if(broken[num.charAt(j) - '0']){
-                    isPossible = false;
-                    break;
-                }
-            }
-            
-            if(isPossible){
-                int press = num.length() + Math.abs(i-n);
-                minPress = Math.min(minPress, press);
-            }
-        }
+        findCombination("");
+
         System.out.println(minPress);
+    }
 
+    public static void findCombination(String currentChannel) {
+        if (!currentChannel.isEmpty()) {
+            int channel = Integer.parseInt(currentChannel);
+            int press = currentChannel.length() + Math.abs(N - channel);
+            minPress = Math.min(minPress, press);
+        }
+
+        if (currentChannel.length() == 6) {
+            return;
+        }
+
+        for (int i = 0; i < 10; i++) {
+            if (!isBroken[i]) {
+                findCombination(currentChannel + i);
+            }
+        }
     }
 }
