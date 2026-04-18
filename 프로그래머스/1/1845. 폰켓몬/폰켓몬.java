@@ -1,11 +1,11 @@
-import java.util.HashMap;
+import java.util.HashSet;
 
 class Solution {
     public int solution(int[] nums) {
-        HashMap<Integer, Integer> map = new HashMap<>();
+        HashSet<Integer> map = new HashSet<>();
         
         for(int num : nums){
-            map.put(num, map.getOrDefault(num, 0)+1);
+            map.add(num);
         }
         
         int result = (nums.length/2 < map.size()) ? nums.length/2 : map.size();
