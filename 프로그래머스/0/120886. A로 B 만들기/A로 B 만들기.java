@@ -1,17 +1,13 @@
 import java.util.Arrays;
-
 class Solution {
     public int solution(String before, String after) {
-        char[] beforeArr = before.toCharArray();
-        char[] afterArr = after.toCharArray();
+        char[] beforeArray = before.toCharArray();
+        char[] afterArray = after.toCharArray();
         
-        Arrays.sort(beforeArr);
-        Arrays.sort(afterArr);
+        Arrays.sort(beforeArray);
+        Arrays.sort(afterArray);
         
-        if (Arrays.equals(beforeArr, afterArr)) {
-            return 1;
-        }
-        
+        if(Arrays.equals(beforeArray, afterArray)) return 1;
         return 0;
     }
 }
