@@ -1,55 +1,42 @@
 import java.util.*;
-
 class Solution {
-    
-    static class Song implements Comparable<Song> {
-        int id;
-        int play;
-        
-        public Song(int id, int play) {
-            this.id = id;
-            this.play = play;
-        }
-        
-        @Override
-        public int compareTo(Song other) {
-            if (this.play == other.play) {
-                return this.id - other.id;
-            }
-            return other.play - this.play;
-        }
-    }
-    
     public int[] solution(String[] genres, int[] plays) {
-        HashMap<String, Integer> genreTotalPlay = new HashMap<>();
-        HashMap<String, ArrayList<Song>> genreSongs = new HashMap<>();
-        
+        Map<String, Integer> map = new HashMap<>();
         for(int i=0; i<genres.length; i++){
-            genreTotalPlay.put(genres[i], genreTotalPlay.getOrDefault(genres[i], 0)+plays[i]);
-            if (!genreSongs.containsKey(genres[i])) {
-                genreSongs.put(genres[i], new ArrayList<>());
-            }
-            genreSongs.get(genres[i]).add(new Song(i, plays[i]));
+            map.put(genres[i], map.getOrDefault(genres[i], 0) + plays[i]);
         }
         
-        ArrayList<String> sortedGenres = new ArrayList<>(genreTotalPlay.keySet());
-        sortedGenres.sort((g1, g2) -> genreTotalPlay.get(g2) - genreTotalPlay.get(g1));
+        List<String> order = new ArrayList<>(map.keySet());
+        order.sort((a,b) -> Integer.compare(map.get(b), map.get(a)));
         
-        ArrayList<Integer> bestAlbum = new ArrayList<>();
-        
-        for(String genre : sortedGenres){
-            ArrayList<Song> songs = genreSongs.get(genre);
+        List<Integer> answer = new ArrayList<>();
+        for(int i=0; i<order.size(); i++){
+            String genre = order.get(i);
             
-            Collections.sort(songs);
+            int firstPlay= -1;
+            int secondPlay= -1;
             
-            bestAlbum.add(songs.get(0).id);
+            int firstIndex = -1;
+            int secondIndex = -1;
             
-            if (songs.size() > 1) {
-                bestAlbum.add(songs.get(1).id);
+            for(int j=0; j<genres.length; j++){
+                if(genres[j].equals(genre)){
+                    if(plays[j] > firstPlay) {
+                        secondPlay = firstPlay;
+                        secondIndex = firstIndex;
+                        firstPlay = plays[j];
+                        firstIndex = j;
+                    } else if(plays[j] > secondPlay) {
+                        secondPlay = plays[j];
+                        secondIndex = j;
+                    }
+                }
             }
-        }
             
-        return bestAlbum.stream().mapToInt(i -> i).toArray();
+            answer.add(firstIndex);
+            if(secondIndex != -1) answer.add(secondIndex);
+        }
         
+        return answer.stream().mapToInt(i->i).toArray();
     }
 }
