@@ -12,7 +12,8 @@ class Solution {
         
         int answer = 0;
         for(int m : moves){
-            if(map.get(m).empty()) continue;
+            Stack<Integer> col = map.get(m);
+            if (col == null || col.empty()) continue;
             
             int doll = map.get(m).pop();
             if(!bucket.empty() && doll == bucket.peek()) {
